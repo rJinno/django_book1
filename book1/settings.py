@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'hello',#Djangoのテンプレート機能がhelloを検索できるようにするため。
 ]
 
 MIDDLEWARE = [
