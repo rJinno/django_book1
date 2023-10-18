@@ -1,36 +1,55 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 
 from django.http import HttpResponse
 from django.views.generic import TemplateView
 
 from .forms import SessionForm
 
-from .forms import HelloForm
+from .forms import HelloForm, FriendForm
 
 from .models import Friend
 # Create your views here.
 
 
 def index6(request):
-    # data = Friend.objects.all()
+    data = Friend.objects.all()
     params = {
         'title': 'Hello',
-        'message': 'all friends',
-        'form': HelloForm(),
-        'data': [],
+        # 'message': 'all friends',
+        # 'form': HelloForm(),
+        'data': data,
     }
-    if (request.method  == 'POST'):
-        print('a')
-        num = request.POST['id']
-        item = Friend.objects.get(id=num)
-        params['data']=[item]
-        params['form']=HelloForm(request.POST)
-    else:
-        params['data']=Friend.objects.all()
+    # if (request.method  == 'POST'):
+    #     print('a')
+    #     num = request.POST['id']
+    #     item = Friend.objects.get(id=num)
+    #     params['data']=[item]
+    #     params['form']=HelloForm(request.POST)
+    # else:
+    #     params['data']=Friend.objects.all()
     return render(request, 'hello/index.html', params)
 
 
+def create(request):
 
+    if(request.method == 'POST'):
+        obj = Friend()
+        friend = FriendForm(request.POST, instance=obj)
+        # name = request.POST['name']
+        # mail = request.POST['mail']
+        # gender = 'gender' in request.POST
+        # age = int(request.POST['age'])
+        # birth = request.POST['birthday']
+        # friend = Friend(name = name, mail =mail, gender = gender,\
+        #                 age = age, birthday = birth)
+        friend.save()
+        return redirect(to='/hello')
+    
+    params = {
+        'title':'Hello',
+        'form':FriendForm(),
+    }
+    return render(request, 'hello/create.html', params)
 
 
 # class HelloView(TemplateView):
