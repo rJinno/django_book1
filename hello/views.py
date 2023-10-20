@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render
 
 from django.http import HttpResponse
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView, DetailView
 
 from .forms import SessionForm
 
@@ -51,6 +51,36 @@ def create(request):
     }
     return render(request, 'hello/create.html', params)
 
+def edit(request, num):
+    obj = Friend.objects.get(id=num)
+    if(request.method == 'POST'):
+        friend = FriendForm(request.POST, instance=obj)
+        friend.save()
+        return redirect(to='/hello')
+    params = {
+        'title': 'Hello',
+        'id': num,
+        'form': FriendForm(instance=obj),
+    }
+    return render(request, 'hello/edit.html', params)
+
+def delete(request, num):
+    friend = Friend.objects.get(id = num)
+    if(request.method == 'POST'):
+        friend.delete()
+        return redirect(to='/hello')
+    params = {
+        'title': 'Hello',
+        'id': num,
+        'obj': friend,
+    }
+    return render(request, 'hello/delete.html', params)
+
+class FriendList(ListView):
+    model = Friend
+
+class FriendDetail(DetailView):
+    model = Friend
 
 # class HelloView(TemplateView):
 #     # template_name = "TEMPLATE_NAME"

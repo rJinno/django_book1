@@ -11,7 +11,7 @@
         rel="stylesheet" crossorigin="anonymous">
 </head>
 <body class="container">
-    <h1 class="display-4 text-primary">{{title}}</h1>
+    <h1 class="display-4 text-primary">Friends List</h1>
     {% comment %} <p class="h5 mt-4">{{message|safe}}</p> {% endcomment %}
     {% comment %} <form action="{% url 'index6' %}" method="post">
         {% csrf_token %}
@@ -21,27 +21,25 @@
     <hr> {% endcomment %}
     <table class="table">
         <tr>
-            <th>data</td>
-            {% comment %} <th>NAME</th>
-            <th>gender</th>
-            <th>mail</th>
-            <th>age</th>
-            <th>birthday</th> {% endcomment %}
+            <th>id</th>
+            <th>{{object.id}}</th>
         </tr>
-    {% for item in data %}
         <tr>
-            <td>{{item}}</td>
-            <td><a href="{% url 'edit' item.id %}">Edit</a></td>
-            <td><a href="{% url 'delete' item.id %}">Delete</a></td>
-            {% comment %} <th>{{item.name}}</th>
-            <th>{% if item.gender == False %}male{% endif %}
-                {% if item.gender == True %}female{% endif %}
-            </th>
-            <th>{{item.mail}}</th>
-            <th>{{item.age}}</th>
-            <th>{{item.birthday}}</th> {% endcomment %}
+            <th>name</th>
+            <th>{{object.name}}</th>
         </tr>
-    {% endfor %}
+        <tr>
+            <th>mail</th>
+            <th>{{object.mail}}</th>
+        </tr>
+        <tr>
+            <th>gender</th>
+            <th>{{object.gender}}</th>
+        </tr>
+        <tr>
+            <th>age</th>
+            <th>{{object.age}}</th>
+        </tr>
     </table>
 </body>
 </html>
