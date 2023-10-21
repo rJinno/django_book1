@@ -12,7 +12,7 @@
 </head>
 <body class="container">
     <h1 class="display-4 text-primary">{{title}}</h1>
-    {% comment %} <p class="h5 mt-4">{{message|safe}}</p> {% endcomment %}
+    <p class="h5 mt-4">{{message|safe}}</p>
     {% comment %} <form action="{% url 'index6' %}" method="post">
         {% csrf_token %}
         {{form}}
@@ -21,7 +21,9 @@
     <hr> {% endcomment %}
     <table class="table">
         <tr>
-            <th>data</td>
+            <th>data</th>
+            <th></th>
+            <th></th>
             {% comment %} <th>NAME</th>
             <th>gender</th>
             <th>mail</th>

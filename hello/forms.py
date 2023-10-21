@@ -23,3 +23,7 @@ class FriendForm(forms.ModelForm):
 class SessionForm(forms.Form):
     session = forms.CharField(label='session', required=False, \
                               widget=forms.TextInput(attrs={'class':'form-control'}))
+    
+class FindForm(forms.Form):
+    find = forms.CharField(label='Find', required=False, \
+                           widget=forms.TextInput(attrs={'class':'form-control'}))

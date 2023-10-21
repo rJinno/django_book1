@@ -2,10 +2,11 @@ from django.shortcuts import redirect, render
 
 from django.http import HttpResponse
 from django.views.generic import TemplateView, ListView, DetailView
+from django.db.models import Count, Sum, Avg, Min, Max
 
 from .forms import SessionForm
 
-from .forms import HelloForm, FriendForm
+from .forms import HelloForm, FriendForm, FindForm
 
 from .models import Friend
 # Create your views here.
@@ -13,20 +14,16 @@ from .models import Friend
 
 def index6(request):
     data = Friend.objects.all()
+    re1 = Friend.objects.aggregate(Count('age'))
+    re2 = Friend.objects.aggregate(Sum('age'))
+    msg = str(re1['age__count']) + ' | ' + str(re2['age__sum'])
     params = {
         'title': 'Hello',
-        # 'message': 'all friends',
+        'message': msg,
         # 'form': HelloForm(),
         'data': data,
     }
-    # if (request.method  == 'POST'):
-    #     print('a')
-    #     num = request.POST['id']
-    #     item = Friend.objects.get(id=num)
-    #     params['data']=[item]
-    #     params['form']=HelloForm(request.POST)
-    # else:
-    #     params['data']=Friend.objects.all()
+
     return render(request, 'hello/index.html', params)
 
 
@@ -81,6 +78,24 @@ class FriendList(ListView):
 
 class FriendDetail(DetailView):
     model = Friend
+
+def find(request):
+    if(request.method == 'POST'):
+        form = FindForm(request.POST)
+        find = request.POST['find']
+        data = Friend.objects.filter(name__startswith=find)
+        msg = 'Results: ' + str(data.count())
+    else:
+        msg = 'search words...'
+        form = FindForm()
+        data = Friend.objects.all()
+    params = {
+        'title': 'Hello',
+        'message': msg,
+        'form': form,
+        'data': data,
+    }
+    return render(request, 'hello/find.html', params)
 
 # class HelloView(TemplateView):
 #     # template_name = "TEMPLATE_NAME"
