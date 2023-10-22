@@ -21,7 +21,9 @@
     <hr> {% endcomment %}
     <table class="table">
         <tr>
-            <th>data</th>
+            <th>id</th>
+            <th>name</th>
+            <th>Messages</th>
             <th></th>
             <th></th>
             {% comment %} <th>NAME</th>
@@ -32,7 +34,15 @@
         </tr>
     {% for item in data %}
         <tr>
-            <td>{{item}}</td>
+            <td>{{item.id}}</td>
+            <td>{{item.name}}</td>
+            <td>
+                <ul>
+                    {% for ob in item.message_set.all %}
+                        <li>{{ob.title}}</li>
+                    {% endfor %}
+                </ul>
+            </td>
             <td><a href="{% url 'edit' item.id %}">Edit</a></td>
             <td><a href="{% url 'delete' item.id %}">Delete</a></td>
             {% comment %} <th>{{item.name}}</th>

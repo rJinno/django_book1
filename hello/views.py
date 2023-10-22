@@ -3,25 +3,27 @@ from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from django.views.generic import TemplateView, ListView, DetailView
 from django.db.models import Count, Sum, Avg, Min, Max
+from django.core.paginator import Paginator
 
 from .forms import SessionForm
 
-from .forms import HelloForm, FriendForm, FindForm
+from .forms import HelloForm, FriendForm, FindForm, MessageForm
 
-from .models import Friend
+from .models import Friend, Message
 # Create your views here.
 
 
-def index6(request):
+def index6(request, num=1):
     data = Friend.objects.all()
-    re1 = Friend.objects.aggregate(Count('age'))
-    re2 = Friend.objects.aggregate(Sum('age'))
-    msg = str(re1['age__count']) + ' | ' + str(re2['age__sum'])
+    page = Paginator(data, 3)
+    # re1 = Friend.objects.aggregate(Count('age'))
+    # re2 = Friend.objects.aggregate(Sum('age'))
+    # msg = str(re1['age__count']) + ' | ' + str(re2['age__sum'])
     params = {
         'title': 'Hello',
-        'message': msg,
+        'message': '',
         # 'form': HelloForm(),
-        'data': data,
+        'data': page.get_page(num),
     }
 
     return render(request, 'hello/index.html', params)
@@ -97,6 +99,19 @@ def find(request):
     }
     return render(request, 'hello/find.html', params)
 
+def message(request, page=1):
+    if(request.method == 'POST'):
+        obj = Message()
+        form = MessageForm(request.POST, instance=obj)
+        form.save()
+    data = Message.objects.all().reverse()
+    paginator = Paginator(data, 2)
+    params = {
+        'title': 'Message',
+        'form': MessageForm(),
+        'data': paginator.get_page(page),
+    }
+    return render(request, 'hello/message.html', params)
 # class HelloView(TemplateView):
 #     # template_name = "TEMPLATE_NAME"
 
